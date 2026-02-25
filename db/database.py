@@ -2,6 +2,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
+import os
 # from core.config import DB_HOSTNAME, DB_PASSWORD, DB_PORT, DB_USERNAME, DATABASE
 
 # DB_URL = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}:{DB_PORT}/{DATABASE}"
