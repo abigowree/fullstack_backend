@@ -14,6 +14,63 @@ router = APIRouter(
 from dependencies import get_current_user
 from models.users import User
 
+
+@router.get("/config")
+def get_assessment_config():
+    return {
+        "scores": {
+            "Less than 2 hours": 1,
+            "2 - 4 hours": 2,
+            "4 - 6 hours": 3,
+            "More than 6 hours": 4,
+            "After an hour or more": 1,
+            "Within an hour": 2,
+            "Within 10 minutes": 3,
+            "Immediately": 4,
+            "Never": 1,
+            "Sometimes": 3,
+            "Often": 3,
+            "Always": 4,
+            "No Impact": 1,
+            "Slight Impact": 2,
+            "Moderate Impact": 3,
+            "Severe Impact": 4,
+            "Rarely": 2,
+            "Constantly": 4,
+            "Very Easy": 1,
+            "Somewhat Easy": 2,
+            "Difficult": 3,
+            "Very Difficult": 4,
+            "Frequently": 4,
+            "Very Frequently": 5,
+            "Not at all": 1,
+            "Low": 2,
+            "Moderate": 3,
+            "High": 4,
+            "Very High": 5
+        }
+    }
+
+
+@router.get("/", response_model=list[SelfAssessmentResponse])
+def get_all_assessments(db: Session = Depends(get_db)):
+    return db.query(SelfAssessment).all()
+
+
+@router.get("/me", response_model=SelfAssessmentResponse)
+def get_my_assessment(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    assessment = db.query(SelfAssessment)\
+        .filter(SelfAssessment.user_id == current_user.id)\
+        .order_by(SelfAssessment.id.desc())\
+        .first()
+    if not assessment:
+        raise HTTPException(status_code=404, detail="Assessment not found")
+    return assessment
+
+
 @router.post("/", response_model=SelfAssessmentResponse)
 def submit_assessment(
     data: SelfAssessmentCreate,

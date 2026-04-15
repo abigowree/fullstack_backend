@@ -9,8 +9,8 @@ class ActivityCreate(BaseModel):
 class ActivityResponse(BaseModel):
     id: int
     activity_name: str
-   
     description: str | None
+    activity_percentage: int | None
 
     class Config:
         from_attributes = True

@@ -34,4 +34,31 @@ def get_all_activities(db: Session = Depends(get_db)):
 @router.get("/get/activities/{percentage}")
 def get_activities(percentage:int, db:Session = Depends(get_db)):
     activities = db.query(Activity).filter(percentage >= Activity.activity_percentage).all()
-    return activities 
+    return activities
+
+
+@router.get("/category-map")
+def get_category_map():
+    """Return category keywords mapping for frontend filtering."""
+    return {
+        'reading': ['reading', 'book'],
+        'exercise': ['walk', 'jogging', 'workout', 'nature'],
+        'creative': ['drawing', 'writing', 'musical', 'music', 'creative'],
+        'social': ['game', 'family', 'volunteering', 'volunteer', 'social'],
+        'mindfulness': ['mindfulness', 'meditation', 'yoga', 'detox', 'mind'],
+        'music': ['musical', 'music', 'practice'],
+
+        'jogging': ['jogging'],
+        'journaling': ['journal'],
+        'cooking practice': ['cooking'],
+        'project build': ['project'],
+        'gardening': ['garden'],
+        'new skill': ['skill', 'new_skill'],
+
+        'intense workout': ['workout', 'intense'],
+        'creative writing': ['writing', 'creative'],
+        'community volunteering': ['volunteering', 'community'],
+        'detox': ['detox'],
+        'deep work': ['deep', 'work'],
+        'brain exercise': ['brain', 'exercise']
+    }

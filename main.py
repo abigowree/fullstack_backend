@@ -15,10 +15,18 @@ app.add_middleware(
 )
 
 Base.metadata.create_all(bind=engine)
+@app.get("/")
+def health_check():
+    return {"status": "ok", "message": "Screen Free API is running"}
 
 app.include_router(activities.router)
 app.include_router(self_assesment.router)
 app.include_router(users.router)
 app.include_router(user_activity.router)
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
 
 
