@@ -13,7 +13,6 @@ router = APIRouter(
 
 
 
-
 @router.post("/", response_model=UserActivityResponse)
 def start_activity(
     data: UserActivityCreate,

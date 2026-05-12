@@ -8,6 +8,8 @@ from dependencies import get_current_user
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
+
+
 @router.post("/register", response_model=UserResponse)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
 
@@ -33,6 +35,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     return new_user
 
 
+
 @router.post("/login")
 def login(data:UserLogin, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == data.email).first()
@@ -47,6 +50,10 @@ def login(data:UserLogin, db: Session = Depends(get_db)):
     access_token = create_access_token(data={"sub": user.email, "user_id": user.id})
     return {"access_token": access_token, "token_type": "bearer", "user_id": user.id}
 
+
+
+
+
 @router.get("/{user_id}")
 def get_user(user_id: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == user_id).first()
@@ -55,6 +62,9 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
 
     return user
+
+
+
 
 @router.get("/me", response_model=UserResponse)
 def read_users_me(current_user: User = Depends(get_current_user)):
